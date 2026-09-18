@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>learnhtml — HTML Basic Tags</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg:        #10161d;
+    --panel:     #161e27;
+    --panel-2:   #1c2531;
+    --line:      #2a3546;
+    --text:      #c9d4e0;
+    --muted:     #6b7c8f;
+    --tag:       #e3b341;   /* amber, like a tag/keyword token */
+    --string:    #56d4a3;   /* teal-green, like a string token */
+    --attr:      #7aa2f7;   /* blue, like an attribute token */
+    --accent:    #ff8a5c;   /* warm coral, cursor / active */
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--tag); color:#10161d; }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    display:flex; align-items:center; gap:28px;
+    height:52px; padding:0 20px;
+    border-bottom:1px solid var(--line);
+    background:var(--panel);
+    font-family:'JetBrains Mono', monospace;
+  }
+  .logo{
+    color:var(--tag); font-weight:700; font-size:15px; letter-spacing:0.2px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .logo span{ color:var(--muted); font-weight:400; }
+  .topnav{ display:flex; gap:22px; list-style:none; margin:0; padding:0; }
+  .topnav li{ font-size:13px; color:var(--muted); cursor:pointer; transition:color .15s; }
+  .topnav li.active{ color:var(--text); }
+  .topnav li:hover{ color:var(--text); }
+  .topbar-search{
+    margin-left:auto; font-size:12px; color:var(--muted);
+    border:1px solid var(--line); border-radius:6px; padding:6px 10px;
+    display:flex; align-items:center; gap:6px;
+  }
+
+  /* ---------- layout ---------- */
+  .layout{ display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 52px); }
+
+  /* ---------- sidebar ---------- */
+  .sidebar{
+    border-right:1px solid var(--line);
+    background:var(--panel);
+    padding:18px 0;
+  }
+  .side-group-title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--muted); padding:6px 20px; margin-top:10px;
+  }
+  .side-item{
+    display:flex; align-items:center; gap:8px;
+    font-size:13.5px; padding:8px 20px;
+    color:var(--muted); cursor:pointer;
+    border-left:2px solid transparent;
+    transition:all .15s;
+  }
+  .side-item:hover{ color:var(--text); background:rgba(255,255,255,0.02); }
+  .side-item.current{
+    color:var(--tag); border-left:2px solid var(--tag);
+    background:rgba(227,179,65,0.06); font-weight:600;
+  }
+  .side-item .dot{ font-family:'JetBrains Mono',monospace; color:var(--line); font-size:12px; }
+  .side-item.current .dot{ color:var(--tag); }
+
+  /* ---------- main ---------- */
+  .main{ padding:36px 48px 60px; max-width:820px; }
+  .breadcrumb{
+    font-family:'JetBrains Mono', monospace; font-size:12.5px;
+    color:var(--muted); margin-bottom:18px; display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .breadcrumb b{ color:var(--attr); font-weight:600; }
+  .breadcrumb span{ color:var(--line); }
+
+  h1.title{
+    font-family:'JetBrains Mono', monospace;
+    font-size:30px; font-weight:700; margin:0 0 6px;
+    color:var(--text); letter-spacing:-0.3px;
+  }
+  h1.title .bracket{ color:var(--tag); }
+  .subtitle{ color:var(--muted); font-size:15px; margin:0 0 28px; line-height:1.6; }
+
+  .rule{ height:1px; background:var(--line); margin:28px 0; border:none; }
+
+  .tag-block{ margin-bottom:34px; }
+  .tag-head{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:8px;
+  }
+  .tag-num{
+    font-family:'JetBrains Mono', monospace; color:var(--muted); font-size:13px;
+    min-width:18px;
+  }
+  .tag-name{
+    font-family:'JetBrains Mono', monospace; font-size:17px; font-weight:700;
+  }
+  .tag-name .b{ color:var(--tag); }
+  .tag-desc{ color:var(--text); font-size:14.5px; margin:0 0 12px 28px; line-height:1.6; }
+
+  .code-sample{
+    margin-left:28px;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px 18px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px; line-height:1.7;
+    color:var(--string);
+    overflow-x:auto;
+  }
+  .code-sample .t{ color:var(--tag); }
+  .code-sample .a{ color:var(--attr); }
+  .code-sample .m{ color:var(--muted); }
+
+  /* ---------- editor section ---------- */
+  .editor-heading{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:1.5px; text-transform:uppercase;
+    color:var(--muted); text-align:center; margin:40px 0 16px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .editor-heading::before, .editor-heading::after{
+    content:""; flex:1; height:1px; background:var(--line);
+  }
+
+  .editor-shell{
+    border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    background:var(--panel);
+  }
+  .editor-grid{ display:grid; grid-template-columns:1fr 1fr; }
+  .editor-pane, .output-pane{ display:flex; flex-direction:column; }
+  .editor-pane{ border-right:1px solid var(--line); }
+  .pane-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    color:var(--muted); padding:9px 14px; border-bottom:1px solid var(--line);
+    display:flex; justify-content:space-between; letter-spacing:0.5px;
+  }
+  .pane-label .dots{ display:flex; gap:5px; }
+  .pane-label .dots i{ width:8px; height:8px; border-radius:50%; display:inline-block; background:var(--line); }
+
+  #code-input{
+    flex:1; min-height:220px; resize:vertical;
+    background:var(--panel); color:var(--text);
+    border:none; outline:none;
+    font-family:'JetBrains Mono', monospace; font-size:13.5px; line-height:1.7;
+    padding:14px 16px; tab-size:2;
+  }
+  #output-frame{ flex:1; min-height:220px; border:none; background:#fff; }
+
+  .editor-actions{
+    display:flex; gap:10px; align-items:center;
+    padding:12px 14px; border-top:1px solid var(--line); background:var(--panel);
+  }
+  .btn{
+    font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:600;
+    border:1px solid var(--line); border-radius:6px; padding:8px 16px;
+    cursor:pointer; background:transparent; color:var(--text);
+    transition:all .15s;
+  }
+  .btn-run{ background:var(--tag); border-color:var(--tag); color:#10161d; }
+  .btn-run:hover{ background:#f0c25c; }
+  .btn:not(.btn-run):hover{ border-color:var(--muted); color:#fff; }
+  .run-hint{ margin-left:auto; font-size:11.5px; color:var(--muted); font-family:'JetBrains Mono', monospace; }
+
+  /* ---------- footer nav ---------- */
+  .lesson-nav{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:44px; padding-top:20px; border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+  }
+  .lesson-nav a{ color:var(--muted); text-decoration:none; cursor:pointer; }
+  .lesson-nav a:hover{ color:var(--tag); }
+  .lesson-nav .next{ color:var(--attr); }
+
+  @media (max-width:760px){
+    .layout{ grid-template-columns:1fr; }
+    .sidebar{ display:none; }
+    .editor-grid{ grid-template-columns:1fr; }
+    .editor-pane{ border-right:none; border-bottom:1px solid var(--line); }
+    .main{ padding:24px 18px 50px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo">&lt;/&gt;<span>learnhtml</span></div>
+    <ul class="topnav">
+      <li class="active">HTML Course</li>
+      <li>Courses</li>
+      <li>Practice</li>
+    </ul>
+    <div class="topbar-search">⌕ Search</div>
+  </div>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="side-group-title">HTML Basics</div>
+      <div class="side-item"><span class="dot">›</span> Introduction</div>
+      <div class="side-item current"><span class="dot">›</span> Basic Tags</div>
+      <div class="side-item"><span class="dot">›</span> Headings</div>
+      <div class="side-item"><span class="dot">›</span> Paragraphs</div>
+      <div class="side-item"><span class="dot">›</span> Links</div>
+      <div class="side-item"><span class="dot">›</span> Images</div>
+      <div class="side-item"><span class="dot">›</span> Lists</div>
+      <div class="side-item"><span class="dot">›</span> Tables</div>
+      <div class="side-item"><span class="dot">›</span> Forms</div>
+    </aside>
+
+    <main class="main">
+      <div class="breadcrumb">
+        <b>&lt;html&gt;</b><span>/</span><b>&lt;head&gt;</b><span>/</span> HTML Basic Tags
+      </div>
+
+      <h1 class="title"><span class="bracket">&lt;</span>HTML Basic Tags<span class="bracket">/&gt;</span></h1>
+      <p class="subtitle">What is HTML? — HTML is the standard markup language used to create webpages. Every page you've ever visited is built from tags like these.</p>
+
+      <hr class="rule">
+
+      <div class="tag-block">
+        <div class="tag-head">
+          <span class="tag-num">1.</span>
+          <span class="tag-name"><span class="b">&lt;html&gt;</span></span>
+        </div>
+        <p class="tag-desc">Defines the root of an HTML document. Everything else lives inside it.</p>
+        <div class="code-sample">
+<span class="t">&lt;html&gt;</span><br>
+&nbsp;&nbsp;<span class="m">...</span><br>
+<span class="t">&lt;/html&gt;</span>
+        </div>
+      </div>
+
+      <div class="tag-block">
+        <div class="tag-head">
+          <span class="tag-num">2.</span>
+          <span class="tag-name"><span class="b">&lt;head&gt;</span></span>
+        </div>
+        <p class="tag-desc">Contains webpage information that isn't shown directly on the page, like the title.</p>
+        <div class="code-sample">
+<span class="t">&lt;head&gt;</span><br>
+&nbsp;&nbsp;<span class="t">&lt;title&gt;</span>My Page<span class="t">&lt;/title&gt;</span><br>
+<span class="t">&lt;/head&gt;</span>
+        </div>
+      </div>
+
+      <div class="tag-block">
+        <div class="tag-head">
+          <span class="tag-num">3.</span>
+          <span class="tag-name"><span class="b">&lt;body&gt;</span></span>
+        </div>
+        <p class="tag-desc">Contains everything visitors actually see: text, images, links, buttons, and more.</p>
+        <div class="code-sample">
+<span class="t">&lt;body&gt;</span><br>
+&nbsp;&nbsp;<span class="t">&lt;h1&gt;</span>Hello World<span class="t">&lt;/h1&gt;</span><br>
+<span class="t">&lt;/body&gt;</span>
+        </div>
+      </div>
+
+      <div class="editor-heading">Interactive Editor</div>
+
+      <div class="editor-shell">
+        <div class="editor-grid">
+          <div class="editor-pane">
+            <div class="pane-label">
+              <span>HTML CODE</span>
+              <span class="dots"><i></i><i></i><i></i></span>
+            </div>
+            <textarea id="code-input" spellcheck="false">&lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;p&gt;My first webpage&lt;/p&gt;</textarea>
+          </div>
+          <div class="output-pane">
+            <div class="pane-label"><span>OUTPUT</span></div>
+            <iframe id="output-frame"></iframe>
+          </div>
+        </div>
+        <div class="editor-actions">
+          <button class="btn btn-run" id="run-btn">▶ Run Code</button>
+          <button class="btn" id="reset-btn">↺ Reset</button>
+          <span class="run-hint">runs live in your browser · nothing is sent anywhere</span>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <a>← Previous Lesson</a>
+        <a class="next">Next Lesson →</a>
+      </div>
+    </main>
+  </div>
+
+<script>
+  const input   = document.getElementById('code-input');
+  const frame   = document.getElementById('output-frame');
+  const runBtn  = document.getElementById('run-btn');
+  const resetBtn= document.getElementById('reset-btn');
+
+  const DEFAULT_CODE = "<h1>Hello World</h1>\n<p>My first webpage</p>";
+
+  function decodeEntities(str){
+    const ta = document.createElement('textarea');
+    ta.innerHTML = str;
+    return ta.value;
+  }
+
+  function runCode(){
+    const raw = decodeEntities(input.value);
+    frame.srcdoc = `<!DOCTYPE html><html><head><style>
+      body{font-family:sans-serif; margin:16px; color:#111;}
+    </style></head><body>${raw}</body></html>`;
+  }
+
+  runBtn.addEventListener('click', runCode);
+  resetBtn.addEventListener('click', () => {
+    input.value = DEFAULT_CODE;
+    runCode();
+  });
+
+  // live preview as you type too
+  input.addEventListener('input', runCode);
+
+  // initial render
+  runCode();
+</script>
+
+</body>
+</html>
